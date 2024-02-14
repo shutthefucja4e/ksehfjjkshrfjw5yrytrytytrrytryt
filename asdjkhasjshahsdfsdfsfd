@@ -49,17 +49,15 @@ b:Toggle("Auto Race",function(bool)
     end)
 end)
 
-b:Toggle("Auto Speed",function(bool)
+b:Toggle("AutoClicker",function(bool)
     getgenv().AutoClick = bool
     
     task.spawn(function()
         while task.wait() do
             if AutoClick then
-                if lp.PlayerGui.ClicksUI.ClickHelper.Visible == true then
-                    game:GetService("ReplicatedStorage").Packages.Knit.Services.ClickService.RF.Click:InvokeServer()
+                game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Train"):FireServer()
                 end
             end
-        end
     end)
 end)
 
@@ -101,7 +99,7 @@ b:Toggle("Auto Hatch",function(bool)
             if AutoHatch then
                 if choosed_egg then
                     local args = {[1] = choosed_egg,[2] = "1",[3] = {}}
-                    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Shop"):WaitForChild("ClientBuyEgg"):InvokeServer("Egg", 1)
+                    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Shop"):WaitForChild("ClientBuyEgg"):InvokeServer(unpack(args))
                 else
                     warn("Please, choose your egg !")
                 end
