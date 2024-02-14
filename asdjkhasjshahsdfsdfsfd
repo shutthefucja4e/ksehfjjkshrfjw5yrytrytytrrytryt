@@ -101,7 +101,7 @@ b:Toggle("Auto Hatch",function(bool)
             if AutoHatch then
                 if choosed_egg then
                     local args = {[1] = choosed_egg,[2] = "1",[3] = {}}
-                    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Shop"):WaitForChild("ClientBuyEgg"):InvokeServer(unpack(args))
+                    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Shop"):WaitForChild("ClientBuyEgg"):InvokeServer("Egg", 1)
                 else
                     warn("Please, choose your egg !")
                 end
