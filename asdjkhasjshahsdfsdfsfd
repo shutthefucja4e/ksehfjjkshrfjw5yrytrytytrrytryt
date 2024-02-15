@@ -83,7 +83,7 @@ b:Label("===========",{
 }) 
 
 local choosed_egg
-b:Dropdown("Choose Egg",{unpack(Eggs)},true,function(egg)
+b:Dropdown("Choose Egg", {unpack(Eggs)}, true, function(egg)
     if egg == Eggs[1] then
        choosed_egg = "Egg"
     elseif egg == Eggs[2] then
@@ -91,17 +91,17 @@ b:Dropdown("Choose Egg",{unpack(Eggs)},true,function(egg)
     end
 end)
 
-b:Toggle("Auto Hatch",function(bool)
+b:Toggle("Auto Hatch", function(bool)
     getgenv().AutoHatch = bool
     
     task.spawn(function()
         while task.wait() do
-            if AutoHatch then
+            if getgenv().AutoHatch then
                 if choosed_egg then
-                    local args = {[1] = choosed_egg,[2] = "1",[3] = {}}
+                    local args = {choosed_egg, "1", {}}
                     game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Shop"):WaitForChild("ClientBuyEgg"):InvokeServer(unpack(args))
                 else
-                    warn("Please, choose your egg !")
+                    warn("Please, choose your egg!")
                 end
             end
         end
