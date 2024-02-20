@@ -50,7 +50,7 @@ b:Toggle("AutoFarmGiftsLegit",function(bool)
             if AutoFarmGiftsLegit then
                 game:GetService("ReplicatedStorage"):WaitForChild("Remote"):WaitForChild("Event"):WaitForChild("Game"):WaitForChild("[C-S]PlayerTryBall"):FireServer(-1)
                 wait(0.1)
-                game:GetService("ReplicatedStorage"):WaitForChild("Remote"):WaitForChild("Event"):WaitForChild("Game"):WaitForChild("[C-S]PlayerEnd"):FireServer(false, 0.002833446051444371)
+                game:GetService("ReplicatedStorage"):WaitForChild("Remote"):WaitForChild("Event"):WaitForChild("Game"):WaitForChild("[C-S]PlayerEnd"):FireServer(false, 0.999999999999999998)
                 
             end
         end
