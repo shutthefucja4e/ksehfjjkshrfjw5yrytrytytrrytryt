@@ -15,40 +15,28 @@ local lp = Players.LocalPlayer
 
 -- Main
 
-local choosed_farm
-b:Dropdown("Choose Farm",{unpack(Farm)},true,function(farm)
-    if farm == Farms[1] then
-        choosed_farm = "test"
-    elseif farm == Farms[2] then
-        choosed_farm = "test"
-    elseif farm == Farms[3] then
-        choosed_farm = "Enemy3"
-    elseif farm == Farms[4] then
-        choosed_farm = "Enemy4"
-    elseif farm == Farms[5] then
-        choosed_farm = "Pro01"
-    elseif farm == Farms[6] then
-        choosed_farm = "Pro02"
-    elseif farm == Farms[7] then
-        choosed_farm = "Pro03"
-    elseif farm == Farms[8] then
-        choosed_farm = "Space01"
-    elseif farm == Farms[9] then
-        choosed_farm = "Ocean01"
-    end
-end)
-
-b:Toggle("Auto Farm",function(bool)
-    getgenv().Farm = bool
+b:Toggle("AutoFarm",function(bool)
+    getgenv().AutoFarm = bool
     
     task.spawn(function()
         while task.wait() do
-            if Farm then
-                if choosed_farm then
-                    local args = {[1] = "BeginCombat", [2] = "Enemy3",[3] = "World1"}
-                    game:GetService("ReplicatedStorage").Postie.Sent:FireServer(unpack(args))
-                else
-                    warn("Please, choose your farm method !")
+            if AutoFarm then
+                print(temperaly stopped.)
+            end
+        end
+    end)
+end)
+
+b:Toggle("AutoCollect",function(bool)
+    getgenv().AutoCollect = bool
+    
+    task.spawn(function()
+        while task.wait() do
+            if AutoCollect then
+                for i,v in pairs(game:GetDescendants()) do
+                    if v.name == 'Meat' then
+                        v.CFrame = game:GetService("Workspace").shutghrhq.HumanoidRootPart.CFRame
+                    end
                 end
             end
         end
