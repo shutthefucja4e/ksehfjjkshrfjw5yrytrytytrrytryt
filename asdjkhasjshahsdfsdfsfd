@@ -31,7 +31,16 @@ b:Toggle("AutoCollect",function(bool)
     task.spawn(function()
         while task.wait() do
             if AutoCollect then
-                game:GetService("ReplicatedStorage"):WaitForChild("COLLECT"):WaitForChild("FUNCTION"):InvokeServer("Hamburger")                
+                if game.Workspace:FindFirstChild("CollectDebris") then
+
+                    for _, debris in ipairs(game.Workspace:FindFirstChild("CollectDebris"):GetChildren()) do
+                        if debris:IsA("Meat") then
+                            debris.CFrame = character:WaitForChild("HumanoidRootPart").CFrame * CFrame.new(0, 5, 0) -- Подбирайте нужные значения для телепортации
+                        end
+                    end
+                else
+                    warn("Папка CollectDebris не найдена!")
+                end           
             end
         end
     end)
