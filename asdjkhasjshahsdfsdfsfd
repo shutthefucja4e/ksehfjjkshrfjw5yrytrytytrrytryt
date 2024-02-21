@@ -73,7 +73,7 @@ b:Toggle("AutoClicker",function(bool)
         while task.wait() do
             if AutoClicker then
                 wait()
-                game:GetService("ReplicatedStorage"):WaitForChild("Postie"):WaitForChild("Sent"):FireServer("Punch/Click_5557634750")
+                game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("PlaceBlock"):FireServer()
             end
         end
     end)
