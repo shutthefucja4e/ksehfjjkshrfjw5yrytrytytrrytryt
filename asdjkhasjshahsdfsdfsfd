@@ -2,7 +2,7 @@
 
 local library = loadstring(game:HttpGet(('https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wall%20v3')))()
 
-local w = library:CreateWindow("🏆 - Sisyphus Sim")
+local w = library:CreateWindow("🏆 - Anime Heroes Sim")
 
 local b = w:CreateFolder("Main")
 local c = w:CreateFolder("Credits")
@@ -15,47 +15,39 @@ local lp = Players.LocalPlayer
 
 -- Main
 
-b:Toggle("AutoFarmWins",function(bool)
-    getgenv().AutoFarmWins = bool
+b:Toggle("AutoFarm",function(bool)
+    getgenv().AutoFarm = bool
     
     task.spawn(function()
         while task.wait() do
-            if AutoFarmWins then
+            if AutoFarm then
                 game:GetService("ReplicatedStorage"):WaitForChild("Remote"):WaitForChild("Event"):WaitForChild("Game"):WaitForChild("[C-S]PlayerTryBall"):FireServer(5)
-                game:GetService("ReplicatedStorage"):WaitForChild("Remote"):WaitForChild("Event"):WaitForChild("Game"):WaitForChild("[C-S]PlayerEnd"):FireServer(true, 1)
-            end
-        end
-    end)
-end)
-
-b:Toggle("AutoFarmGiftsRage",function(bool)
-    getgenv().AutoFarmGiftsRage = bool
-    
-    task.spawn(function()
-        while task.wait() do
-            if AutoFarmGiftsRage then
-                game:GetService("ReplicatedStorage"):WaitForChild("Remote"):WaitForChild("Event"):WaitForChild("Game"):WaitForChild("[C-S]PlayerTryBall"):FireServer(-1)
-                game:GetService("ReplicatedStorage"):WaitForChild("Remote"):WaitForChild("Event"):WaitForChild("Game"):WaitForChild("[C-S]PlayerEnd"):FireServer(false, 1)
-                
-            end
-        end
-    end)
-end)
-
-b:Toggle("AutoFarmGiftsLegit",function(bool)
-    getgenv().AutoFarmGiftsLegit = bool
-    
-    task.spawn(function()
-        while task.wait() do
-            if AutoFarmGiftsLegit then
-                game:GetService("ReplicatedStorage"):WaitForChild("Remote"):WaitForChild("Event"):WaitForChild("Game"):WaitForChild("[C-S]PlayerTryBall"):FireServer(-1)
                 wait(0.1)
-                game:GetService("ReplicatedStorage"):WaitForChild("Remote"):WaitForChild("Event"):WaitForChild("Game"):WaitForChild("[C-S]PlayerEnd"):FireServer(false, 0.999999999999999998)
-                
+                game:GetService("ReplicatedStorage"):WaitForChild("Remote"):WaitForChild("Event"):WaitForChild("Game"):WaitForChild("[C-S]PlayerEnd"):FireServer(false, 0.9368765336613304)
             end
         end
     end)
 end)
+
+b:Toggle("AutoGifts",function(bool)
+    getgenv().AutoGifts = bool
+    
+    task.spawn(function()
+        while task.wait() do
+            if AutoGifts then
+                game:GetService("ReplicatedStorage"):WaitForChild("Postie"):WaitForChild("Sent"):FireServer("ClaimPlaytimeGift", 60)
+                game:GetService("ReplicatedStorage"):WaitForChild("Postie"):WaitForChild("Sent"):FireServer("ClaimPlaytimeGift", 180)
+                game:GetService("ReplicatedStorage"):WaitForChild("Postie"):WaitForChild("Sent"):FireServer("ClaimPlaytimeGift", 300)
+                game:GetService("ReplicatedStorage"):WaitForChild("Postie"):WaitForChild("Sent"):FireServer("ClaimPlaytimeGift", 420)
+                game:GetService("ReplicatedStorage"):WaitForChild("Postie"):WaitForChild("Sent"):FireServer("ClaimPlaytimeGift", 540)
+                game:GetService("ReplicatedStorage"):WaitForChild("Postie"):WaitForChild("Sent"):FireServer("ClaimPlaytimeGift", 660)
+                game:GetService("ReplicatedStorage"):WaitForChild("Postie"):WaitForChild("Sent"):FireServer("ClaimPlaytimeGift", 780)
+                game:GetService("ReplicatedStorage"):WaitForChild("Postie"):WaitForChild("Sent"):FireServer("ClaimPlaytimeGift", 1000)
+            end
+        end
+    end)
+end)
+
 
 b:Toggle("AutoClicker",function(bool)
     getgenv().AutoClicker = bool
@@ -63,7 +55,20 @@ b:Toggle("AutoClicker",function(bool)
     task.spawn(function()
         while task.wait() do
             if AutoClicker then
-                game:GetService("ReplicatedStorage"):WaitForChild("Remote"):WaitForChild("Event"):WaitForChild("Game"):WaitForChild("[C-S]PlayerClick"):FireServer(game:GetService("Players").LocalPlayer.Character:FindFirstChild("6_1"))
+                wait()
+                game:GetService("ReplicatedStorage"):WaitForChild("Postie"):WaitForChild("Sent"):FireServer("Punch/Click_5557634750")
+            end
+        end
+    end)
+end)
+
+b:Toggle("AutoEquipBest",function(bool)
+    getgenv().AutoEquipBest = bool
+    
+    task.spawn(function()
+        while task.wait() do
+            if AutoEquipBest then
+                game:GetService("ReplicatedStorage"):WaitForChild("Postie"):WaitForChild("Sent"):FireServer("ToggleBestPets_5557634750", false)
             end
         end
     end)
@@ -75,7 +80,7 @@ b:Toggle("Good WalkSpeed",function(bool)
     task.spawn(function()
         while task.wait() do
             if WalkSpeed then
-                game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 80
+                game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 150
             end
         end
     end)
@@ -101,7 +106,7 @@ b:Toggle("AutoRelics",function(bool)
         while task.wait() do
             if AutoRebirth then
                 game:GetService("ReplicatedStorage"):WaitForChild("Remote"):WaitForChild("Function"):WaitForChild("Ornaments"):WaitForChild("[C-S]PlayerTryDoLuck"):InvokeServer("5", 1)
-                task.wait(5)
+                task.wait(0.1)
             end
         end
     end)
