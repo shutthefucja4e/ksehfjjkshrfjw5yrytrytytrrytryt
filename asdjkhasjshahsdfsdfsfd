@@ -1,6 +1,6 @@
 local library = loadstring(game:HttpGet(('https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wall%20v3')))()
 
-local w = library:CreateWindow("🏆 - every fat sim")
+local w = library:CreateWindow("🏆 - Anime Heroes Sim")
 
 local b = w:CreateFolder("Main")
 local c = w:CreateFolder("Credits")
@@ -31,11 +31,7 @@ b:Toggle("AutoCollect",function(bool)
     task.spawn(function()
         while task.wait() do
             if AutoCollect then
-                for i,v in pairs(game:GetDescendants()) do
-                    if v.name == 'Meat' then
-                        v.CFrame = game:GetService("Workspace").shutghrhq.HumanoidRootPart.CFRame
-                    end
-                end
+                game:GetService("ReplicatedStorage"):WaitForChild("COLLECT"):WaitForChild("FUNCTION"):InvokeServer("Hamburger")                
             end
         end
     end)
