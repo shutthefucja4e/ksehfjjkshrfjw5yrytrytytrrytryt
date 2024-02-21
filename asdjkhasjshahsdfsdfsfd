@@ -121,7 +121,7 @@ c:Label("UI : Wally UI V3",{
     
 })
 
-c:Label("Made by : trl#8281",{
+c:Label("Made by : trlxzm#1241",{
     TextSize = 15; -- Self Explaining
     TextColor = Color3.fromRGB(255,255,255); -- Self Explaining
     BgColor = Color3.fromRGB(69,69,69); -- Self Explaining
