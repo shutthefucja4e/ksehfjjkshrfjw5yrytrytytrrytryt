@@ -15,13 +15,41 @@ local lp = Players.LocalPlayer
 
 -- Main
 
-b:Toggle("AutoFarm",function(bool)
-    getgenv().AutoFarm = bool
+local choosed_farm
+b:Dropdown("Choose Farm",{unpack(Farm)},true,function(farm)
+    if farm == Farms[1] then
+        choosed_farm = "test"
+    elseif farm == Farms[2] then
+        choosed_farm = "test"
+    elseif farm == Farms[3] then
+        choosed_farm = "Enemy3"
+    elseif farm == Farms[4] then
+        choosed_farm = "Enemy4"
+    elseif farm == Farms[5] then
+        choosed_farm = "Pro01"
+    elseif farm == Farms[6] then
+        choosed_farm = "Pro02"
+    elseif farm == Farms[7] then
+        choosed_farm = "Pro03"
+    elseif farm == Farms[8] then
+        choosed_farm = "Space01"
+    elseif farm == Farms[9] then
+        choosed_farm = "Ocean01"
+    end
+end)
+
+b:Toggle("Auto Farm",function(bool)
+    getgenv().Farm = bool
     
     task.spawn(function()
         while task.wait() do
-            if AutoFarm then
-                game:GetService("ReplicatedStorage").Postie.Received:FireServer()
+            if Farm then
+                if choosed_farm then
+                    local args = {[1] = "BeginCombat", [2] = "Enemy3",[3] = "World1"}
+                    game:GetService("ReplicatedStorage").Postie.Sent:FireServer(unpack(args))
+                else
+                    warn("Please, choose your farm method !")
+                end
             end
         end
     end)
@@ -66,6 +94,7 @@ b:Toggle("AutoEquipBest",function(bool)
     task.spawn(function()
         while task.wait() do
             if AutoEquipBest then
+                wait(2)
                 game:GetService("ReplicatedStorage"):WaitForChild("Postie"):WaitForChild("Sent"):FireServer("ToggleBestPets_5557634750", false)
             end
         end
@@ -90,8 +119,8 @@ b:Toggle("AutoRebirth",function(bool)
     task.spawn(function()
         while task.wait() do
             if AutoRebirth then
-                game:GetService("ReplicatedStorage"):WaitForChild("Remote"):WaitForChild("Event"):WaitForChild("Eco"):WaitForChild("[C-S]PlayerTryRebirth"):FireServer()
-                task.wait(0.1)
+                wait(0.5)
+                game:GetService("ReplicatedStorage").Postie.Sent:FireServer("AttemptRebirth_5557634750")
             end
         end
     end)
@@ -121,7 +150,7 @@ c:Label("UI : Wally UI V3",{
     
 })
 
-c:Label("Made by : trlxzm#1241",{
+c:Label("Made by : trl#8281",{
     TextSize = 15; -- Self Explaining
     TextColor = Color3.fromRGB(255,255,255); -- Self Explaining
     BgColor = Color3.fromRGB(69,69,69); -- Self Explaining
