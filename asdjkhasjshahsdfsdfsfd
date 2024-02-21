@@ -21,9 +21,7 @@ b:Toggle("AutoFarm",function(bool)
     task.spawn(function()
         while task.wait() do
             if AutoFarm then
-                game:GetService("ReplicatedStorage"):WaitForChild("Remote"):WaitForChild("Event"):WaitForChild("Game"):WaitForChild("[C-S]PlayerTryBall"):FireServer(5)
-                wait(0.1)
-                game:GetService("ReplicatedStorage"):WaitForChild("Remote"):WaitForChild("Event"):WaitForChild("Game"):WaitForChild("[C-S]PlayerEnd"):FireServer(false, 0.9368765336613304)
+                game:GetService("ReplicatedStorage").Postie.Received:FireServer()
             end
         end
     end)
