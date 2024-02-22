@@ -1,6 +1,6 @@
 local library = loadstring(game:HttpGet(('https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wall%20v3')))()
 
-local w = library:CreateWindow("🏆 - +1 jump every")
+local w = library:CreateWindow("🏆 - Every Fat Sim")
 
 local b = w:CreateFolder("Main")
 local c = w:CreateFolder("Credits")
@@ -19,8 +19,9 @@ b:Toggle("AutoFarm",function(bool)
     task.spawn(function()
         while task.wait() do
             if AutoFarm then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(56346, 183586, 404)
+                wait(5)
                 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(56346, 183585, 416)
-                wait(2)
             end
         end
     end)
