@@ -69,7 +69,7 @@ b:Toggle("AutoClicker",function(bool)
             if AutoClicker then
                 wait()
                 game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("ClientToServer"):WaitForChild("ClientToServerEvent"):FireServer("HUDHandler", "EmitClicks") 
-                game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("ClientToServer"):WaitForChild("ClientToServerFunction"):InvokeServer("HUDHandler", "Clickerr", 1) 
+                game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("ClientToServer"):WaitForChild("ClientToServerFunction"):InvokeServer("HUDHandler", "Clickerr", {manual = {["2"] = 1}})
             end
         end
     end)
