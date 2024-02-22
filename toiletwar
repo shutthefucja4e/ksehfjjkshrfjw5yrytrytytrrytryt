@@ -1,0 +1,187 @@
+local library = loadstring(game:HttpGet(('https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wall%20v3')))()
+
+local w = library:CreateWindow("🏆 - Toilet War")
+
+local b = w:CreateFolder("Main")
+local c = w:CreateFolder("Credits")
+
+-- Variables
+
+local Players = game:GetService("Players")
+
+local lp = Players.LocalPlayer
+
+-- Main
+
+b:Toggle("AutoFarm",function(bool)
+    getgenv().AutoFarm = bool
+    
+    task.spawn(function()
+        while task.wait() do
+            if AutoFarm then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(56346, 183586, 404)
+                wait(5)
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(56346, 183585, 416)
+            end
+        end
+    end)
+end)
+
+b:Toggle("AutoAttack",function(bool)
+    getgenv().AutoAttack = bool
+    
+    task.spawn(function()
+        while task.wait() do
+            if AutoAttack then
+                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("sleitnick_knit@1.5.1"):WaitForChild("knit"):WaitForChild("Services"):WaitForChild("EnemyService"):WaitForChild("RE"):WaitForChild("HitEnemy"):FireServer()
+            end
+        end
+    end)
+end)
+
+b:Toggle("AutoCollect",function(bool)
+    getgenv().AutoCollect = bool
+    
+    task.spawn(function()
+        while task.wait() do
+            if AutoCollect then
+                if game.Workspace:FindFirstChild("CollectDebris") then
+
+                    for _, debris in ipairs(game.Workspace:FindFirstChild("CollectDebris"):GetChildren()) do
+                        if debris:IsA("Meat") then
+                            debris.CFrame = character:WaitForChild("HumanoidRootPart").CFrame * CFrame.new(0, 5, 0) -- Подбирайте нужные значения для телепортации
+                        end
+                    end
+                else
+                    warn("Папка CollectDebris не найдена!")
+                end           
+            end
+        end
+    end)
+end)
+
+b:Toggle("AutoGifts",function(bool)
+    getgenv().AutoGifts = bool
+    
+    task.spawn(function()
+        while task.wait() do
+            if AutoGifts then
+                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("sleitnick_knit@1.5.1"):WaitForChild("knit"):WaitForChild("Services"):WaitForChild("OnlineRewardService"):WaitForChild("RE"):WaitForChild("GetOnlineReward"):FireServer(1)        
+                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("sleitnick_knit@1.5.1"):WaitForChild("knit"):WaitForChild("Services"):WaitForChild("OnlineRewardService"):WaitForChild("RE"):WaitForChild("GetOnlineReward"):FireServer(2)                
+                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("sleitnick_knit@1.5.1"):WaitForChild("knit"):WaitForChild("Services"):WaitForChild("OnlineRewardService"):WaitForChild("RE"):WaitForChild("GetOnlineReward"):FireServer(3)                
+                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("sleitnick_knit@1.5.1"):WaitForChild("knit"):WaitForChild("Services"):WaitForChild("OnlineRewardService"):WaitForChild("RE"):WaitForChild("GetOnlineReward"):FireServer(4)                
+                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("sleitnick_knit@1.5.1"):WaitForChild("knit"):WaitForChild("Services"):WaitForChild("OnlineRewardService"):WaitForChild("RE"):WaitForChild("GetOnlineReward"):FireServer(5)                
+                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("sleitnick_knit@1.5.1"):WaitForChild("knit"):WaitForChild("Services"):WaitForChild("OnlineRewardService"):WaitForChild("RE"):WaitForChild("GetOnlineReward"):FireServer(6)                
+                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("sleitnick_knit@1.5.1"):WaitForChild("knit"):WaitForChild("Services"):WaitForChild("OnlineRewardService"):WaitForChild("RE"):WaitForChild("GetOnlineReward"):FireServer(7)                
+                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("sleitnick_knit@1.5.1"):WaitForChild("knit"):WaitForChild("Services"):WaitForChild("OnlineRewardService"):WaitForChild("RE"):WaitForChild("GetOnlineReward"):FireServer(8)                
+                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("sleitnick_knit@1.5.1"):WaitForChild("knit"):WaitForChild("Services"):WaitForChild("OnlineRewardService"):WaitForChild("RE"):WaitForChild("GetOnlineReward"):FireServer(9)                
+                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("sleitnick_knit@1.5.1"):WaitForChild("knit"):WaitForChild("Services"):WaitForChild("OnlineRewardService"):WaitForChild("RE"):WaitForChild("GetOnlineReward"):FireServer(10)                
+                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("sleitnick_knit@1.5.1"):WaitForChild("knit"):WaitForChild("Services"):WaitForChild("OnlineRewardService"):WaitForChild("RE"):WaitForChild("GetOnlineReward"):FireServer(11)                
+                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("sleitnick_knit@1.5.1"):WaitForChild("knit"):WaitForChild("Services"):WaitForChild("OnlineRewardService"):WaitForChild("RE"):WaitForChild("GetOnlineReward"):FireServer(12)                        
+            end
+        end
+    end)
+end)
+
+
+b:Toggle("AutoClicker",function(bool)
+    getgenv().AutoClicker = bool
+    
+    task.spawn(function()
+        while task.wait() do
+            if AutoClicker then
+                wait()
+                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("sleitnick_knit@1.5.1"):WaitForChild("knit"):WaitForChild("Services"):WaitForChild("EnemyService"):WaitForChild("RE"):WaitForChild("HitDummy"):FireServer()
+            end
+        end
+    end)
+end)
+
+b:Toggle("AutoCraftAll",function(bool)
+    getgenv().AutoCraftAll = bool
+    
+    task.spawn(function()
+        while task.wait() do
+            if AutoCraftAll then
+                wait(0.5)
+                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("sleitnick_knit@1.5.1"):WaitForChild("knit"):WaitForChild("Services"):WaitForChild("PetService"):WaitForChild("RE"):WaitForChild("EnlargeAllPets"):FireServer()
+            end
+        end
+    end)
+end)
+
+b:Toggle("AutoEquipBest",function(bool)
+    getgenv().AutoEquipBest = bool
+    
+    task.spawn(function()
+        while task.wait() do
+            if AutoEquipBest then
+                wait(2)
+                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("sleitnick_knit@1.5.1"):WaitForChild("knit"):WaitForChild("Services"):WaitForChild("PetService"):WaitForChild("RE"):WaitForChild("EquipBestPets"):FireServer()
+            end
+        end
+    end)
+end)
+
+b:Toggle("Good WalkSpeed",function(bool)
+    getgenv().WalkSpeed = bool
+    
+    task.spawn(function()
+        while task.wait() do
+            if WalkSpeed then
+                game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 150
+            end
+        end
+    end)
+end)
+
+b:Toggle("AutoRebirth",function(bool)
+    getgenv().AutoRebirth = bool
+    
+    task.spawn(function()
+        while task.wait() do
+            if AutoRebirth then
+                wait(0.5)
+                game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("sleitnick_knit@1.5.1"):WaitForChild("knit"):WaitForChild("Services"):WaitForChild("RebirthService"):WaitForChild("RF"):WaitForChild("Rebirth"):InvokeServer()
+            end
+        end
+    end)
+end)
+
+b:Toggle("AutoRelics",function(bool)
+    getgenv().AutoRelics = bool
+    
+    task.spawn(function()
+        while task.wait() do
+            if AutoRebirth then
+                game:GetService("ReplicatedStorage"):WaitForChild("Remote"):WaitForChild("Function"):WaitForChild("Ornaments"):WaitForChild("[C-S]PlayerTryDoLuck"):InvokeServer("5", 1)
+                task.wait(0.1)
+            end
+        end
+    end)
+end)
+
+warn("Ty for using my script bro <3 !")
+
+b:DestroyGui()
+
+c:Label("UI : Wally UI V3",{
+    TextSize = 20; -- Self Explaining
+    TextColor = Color3.fromRGB(255,255,255); -- Self Explaining
+    BgColor = Color3.fromRGB(69,69,69); -- Self Explaining
+    
+})
+
+c:Label("Made by : trl#8281",{
+    TextSize = 15; -- Self Explaining
+    TextColor = Color3.fromRGB(255,255,255); -- Self Explaining
+    BgColor = Color3.fromRGB(69,69,69); -- Self Explaining
+    
+})
+
+c:Label("Any Problems? ^ Add me :)",{
+    TextSize = 15; -- Self Explaining
+    TextColor = Color3.fromRGB(255,255,255); -- Self Explaining
+    BgColor = Color3.fromRGB(69,69,69); -- Self Explaining
+    
+})
