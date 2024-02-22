@@ -19,12 +19,7 @@ b:Toggle("AutoFarm",function(bool)
     task.spawn(function()
         while task.wait() do
             if AutoFarm then
-                if game.Workspace:FindFirstChild("World14") then -- Проверяем, найден ли объект
-                    local targetPosition = game.Workspace:FindFirstChild("World14").Position -- Получаем позицию объекта
-                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Workspace:FindFirstChild("World14")) -- Телепортируем игрока к позиции объекта
-                else
-                    print("Object 'World14' not found!") -- Выводим сообщение, если объект не найден
-                end
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(56346, 183583, 416)
             end
         end
     end)
