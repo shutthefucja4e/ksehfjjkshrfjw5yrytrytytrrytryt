@@ -10,6 +10,16 @@ public class НазваниеФункции extends Function {
 }
 В этом евенте ты обязан сделать так, чтобы весь код был упомянут в этом эвенте (иначе код работать не будет)
 Кроме этого, ты обязан писать только на существующем API Minecraft версии 1.16.5 (MCP)
+Также, тебе прийдется использовать следующие сеттинги: BindSetting, BooleanOption, ButtonSetting, ColorSetting, ModeSetting, MultiBoxSetting, SliderSetting, TextSetting
+Пример работы каждого я показывать не буду, но например давай покажу ModeSetting и BooleanOption
+Например ModeSetting:
+public ModeSetting mode = new ModeSetting("Mode", "Test", "Test", "Test1");
+public BooleanOption smart = new BooleanOption("Тестить", true);
+Если так таковые сеттинги имеются, тогда прийдется создать тебе паблик
+Примерно будет так:
+public TestFunction() {
+    addSettings(test, test1); / Тут ты пишешь заместо test, test1 названия сеттингов
+}
 
 RenderUtil (ui)
 package arctic.tech.util.render;
@@ -22286,4 +22296,348 @@ public class SmoothStepAnimation extends Animation {
         return -2 * Math.pow(x1, 3) + (3 * Math.pow(x1, 2));
     }
 
+}
+
+BindSetting:
+package arctic.tech.modules.settings.imp;
+
+import arctic.tech.modules.settings.Setting;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.function.Supplier;
+
+@Getter
+@Setter
+public class BindSetting extends Setting {
+
+    private int key;
+
+    public BindSetting(String name, int defaultKey) {
+        super(name);
+        key = defaultKey;
+    }
+    public BindSetting setVisible(Supplier<Boolean> bool) {
+        visible = bool;
+        return this;
+    }
+
+    @Override
+    public SettingType getType() {
+        return SettingType.BIND_SETTING;
+    }
+}
+
+BooleanOption:
+package arctic.tech.modules.settings.imp;
+
+
+import arctic.tech.modules.settings.Setting;
+
+import java.util.function.Supplier;
+
+public class BooleanOption extends Setting {
+    private boolean value;
+    private String desc;
+    public float anim;
+
+    public BooleanOption(String name, boolean value) {
+        super(name);
+        this.value = value;
+    }
+
+    public BooleanOption(String name, String desc, boolean value) {
+        super(name);
+        this.value = value;
+        this.desc = desc;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public boolean get() {
+        return value;
+    }
+
+    public void toggle() {
+        value = !value;
+    }
+
+    public void set(boolean value) {
+        this.value = value;
+    }
+
+    public BooleanOption setVisible(Supplier<Boolean> bool) {
+        visible = bool;
+        return this;
+    }
+
+
+    @Override
+    public SettingType getType() {
+        return SettingType.BOOLEAN_OPTION;
+    }
+}
+
+ButtonSetting:
+package arctic.tech.modules.settings.imp;
+
+import arctic.tech.modules.settings.Setting;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.function.Supplier;
+
+@Getter
+@Setter
+public class ButtonSetting extends Setting {
+
+    private Runnable run;
+
+    public ButtonSetting(String name, Runnable run) {
+        super(name);
+        this.run = run;
+    }
+    public ButtonSetting setVisible(Supplier<Boolean> bool) {
+        visible = bool;
+        return this;
+    }
+
+    @Override
+    public SettingType getType() {
+        return SettingType.BUTTON_SETTING;
+    }
+}
+
+ModeSetting:
+package arctic.tech.modules.settings.imp;
+
+import arctic.tech.modules.settings.Setting;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.Arrays;
+import java.util.function.Supplier;
+
+@Getter
+public class ModeSetting extends Setting {
+    @Setter
+    private int index;
+    public String[] modes;
+
+
+    public ModeSetting(String name, String current, String... modes) {
+        super(name);
+        this.modes = modes;
+        this.index = Arrays.asList(modes).indexOf(current);
+    }
+
+    public boolean is(String mode) {
+        return get().equals(mode);
+    }
+
+    public String get() {
+        try {
+            if (index < 0 || index >= modes.length) {
+                return modes[0];
+            }
+            return modes[index];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return "ERROR";
+        }
+    }
+
+    public void set(String mode) {
+        this.index = Arrays.asList(modes).indexOf(mode);
+    }
+
+    public void set(int mode) {
+        this.index = mode;
+    }
+
+    public ModeSetting setVisible(Supplier<Boolean> bool) {
+        visible = bool;
+        return this;
+    }
+
+    @Override
+    public SettingType getType() {
+        return SettingType.MODE_SETTING;
+    }
+}
+
+ColorSetting:
+package arctic.tech.modules.settings.imp;
+
+import arctic.tech.modules.settings.Setting;
+
+import java.awt.*;
+import java.util.function.Supplier;
+
+public class ColorSetting extends Setting {
+    public int color = 0;
+
+    public ColorSetting(String name, int color) {
+        super(name);
+        this.color = color;
+    }
+
+    public int get() {
+        return color;
+    }
+
+    public Color getColor() {
+        return new Color(color);
+    }
+
+    public ColorSetting setVisible(Supplier<Boolean> bool) {
+        visible = bool;
+        return this;
+    }
+
+    @Override
+    public SettingType getType() {
+        return SettingType.COLOR_SETTING;
+    }
+}
+
+MultiBoxSetting:
+package arctic.tech.modules.settings.imp;
+
+import arctic.tech.modules.settings.Setting;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+
+public class MultiBoxSetting extends Setting {
+    public List<BooleanOption> options;
+    public int index;
+    public float animation;
+
+    public MultiBoxSetting(String name, BooleanOption... options) {
+        super(name);
+        this.options = List.of(options);
+    }
+
+    public boolean get(String name) {
+        return Objects.requireNonNull(this.options.stream().filter((option) -> option.getName().equalsIgnoreCase(name)).findFirst().orElse(null)).get();
+    }
+
+    public void set(String name, boolean value) {
+        Objects.requireNonNull(this.options.stream().filter((option) -> option.getName().equalsIgnoreCase(name)).findFirst().orElse(null)).set(value);
+    }
+
+    public List<BooleanOption> getToggled() {
+        return this.options.stream().filter(BooleanOption::get).collect(Collectors.toList());
+    }
+
+    public String get() {
+        List<String> includedOptions = new ArrayList<>();
+        for (BooleanOption option : options) {
+            if (option.get()) {
+                includedOptions.add(option.getName());
+            }
+        }
+        return String.join(", ", includedOptions);
+    }
+
+    public void set(int index, boolean value) {
+        this.options.get(index).set(value);
+    }
+
+    public boolean get(int index) {
+        return this.options.get(index).get();
+    }
+
+    public MultiBoxSetting setVisible(Supplier<Boolean> bool) {
+        this.visible = bool;
+        return this;
+    }
+
+    @Override
+    public SettingType getType() {
+        return SettingType.MULTI_BOX_SETTING;
+    }
+}
+
+SliderSetting:
+package arctic.tech.modules.settings.imp;
+
+
+import arctic.tech.modules.settings.Setting;
+import lombok.Getter;
+import net.minecraft.util.math.MathHelper;
+
+import java.util.function.Supplier;
+
+public class SliderSetting extends Setting {
+    private float value;
+    @Getter
+    private final float min;
+    @Getter
+    private final float max;
+    @Getter
+    private final float increment;
+
+
+    public SliderSetting(String name, float value, float min, float max, float increment) {
+        super(name);
+        this.value = value;
+        this.min = min;
+        this.max = max;
+        this.increment = increment;
+
+    }
+
+    public SliderSetting setVisible(Supplier<Boolean> bool) {
+        visible = bool;
+        return this;
+    }
+
+    public Number getValue() {
+        return MathHelper.clamp(value, getMin(), getMax());
+    }
+
+    public void setValue(float value) {
+        this.value = MathHelper.clamp(value, getMin(), getMax());
+    }
+
+    @Override
+    public SettingType getType() {
+        return SettingType.SLIDER_SETTING;
+    }
+}
+
+TextSetting:
+package arctic.tech.modules.settings.imp;
+
+import arctic.tech.modules.settings.Setting;
+
+import java.util.function.Supplier;
+
+public class TextSetting extends Setting {
+    public String text;
+
+    public TextSetting(String name, String text) {
+        super(name);
+       this.text = text;
+    }
+
+    public String get() {
+        return text;
+    }
+
+    public TextSetting setVisible(Supplier<Boolean> bool) {
+        visible = bool;
+        return this;
+    }
+
+    @Override
+    public SettingType getType() {
+        return SettingType.TEXT_SETTING;
+    }
 }
