@@ -1,3 +1,15 @@
+First.
+Первым делом в коде должен быть написан package (например package arctic.tech.modules.impl.combat - зависит от темы функции)
+Дальше идут импорты (тебе известно)
+Дальше ты должен исполнить это как функцию:
+@FunctionAnnotation(name = "НазваниеФункции", type = Type.ТипФункции(зависит от package после impl)
+public class НазваниеФункции extends Function {
+После этого обязательно должен быть:
+@Override
+    public void onEvent(final Event event) {
+}
+В этом евенте ты обязан сделать так, чтобы весь код был упомянут в этом эвенте (иначе код работать не будет)
+
 RenderUtil (ui)
 package arctic.tech.util.render;
 
