@@ -96,9 +96,9 @@ local function checkPlayer(player)
         end
     end
 
-    -- Проверка по никнейму
+    -- Проверка по никнейму и отображаемому имени
     for _, name in ipairs(namesToKick) do
-        if player.Name == name then
+        if player.Name == name or player.DisplayName == name then
             player:Kick("Игрок с запрещенным никнеймом найден на сервере.")
             return
         end
