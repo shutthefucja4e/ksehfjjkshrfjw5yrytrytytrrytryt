@@ -15,6 +15,7 @@ local moderators = {
     "superbomb7",
     "Unkn0wn",
     "Ahzhih",
+    "mxrt1e",
     "マーティ",
     "ihearthorseplinko",
     "TacticalPenguin",
