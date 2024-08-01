@@ -1,24 +1,4 @@
-warn("Стафф детектор успешно загружен")
-warn("Последующие 2 секунды будет идти проверка на запрещенных лиц.")
-warn("Проверка закончена. Приятной игры!")
-
 local Players = game:GetService("Players")
-local HttpService = game:GetService("HttpService")
-
--- ID группы
-local groupId = 5479038
-
--- Список ролей, при нахождении которых игрок будет кикнут
-local rolesToKick = {
-    "Trial Moderator",
-    "Game Moderator",
-    "Senior Moderator",
-    "Head Moderator",
-    "Developer",
-    "Project Manager",
-    "Coordinator",
-    "Administrator"
-}
 
 -- Список никнеймов, при нахождении которых игрок будет кикнут
 local namesToKick = {
@@ -70,36 +50,26 @@ local namesToKick = {
     "MetatableIndex"
 }
 
--- Функция для получения роли игрока в группе
-local function getRoleInGroup(userId, groupId)
-    local url = string.format("https://groups.roblox.com/v1/users/%d/groups/roles", userId)
-    local response = HttpService:GetAsync(url)
-    local data = HttpService:JSONDecode(response)
-    for _, groupData in ipairs(data.data) do
-        if groupData.group.id == groupId then
-            return groupData.role.name
-        end
-    end
-    return nil
-end
+-- Список эмодзи, при нахождении которых игрок будет кикнут
+local emojisToKick = {
+    "🪓",
+    "🔨"
+}
 
 -- Функция проверки игрока
 local function checkPlayer(player)
-    -- Проверка по роли в группе
-    local role = getRoleInGroup(player.UserId, groupId)
-    if role then
-        for _, roleName in ipairs(rolesToKick) do
-            if role == roleName then
-                player:Kick("Модератор или администратор найден на сервере.")
-                return
-            end
-        end
-    end
-
     -- Проверка по никнейму и отображаемому имени
     for _, name in ipairs(namesToKick) do
         if player.Name == name or player.DisplayName == name then
             player:Kick("Игрок с запрещенным никнеймом найден на сервере.")
+            return
+        end
+    end
+
+    -- Проверка по эмодзи в никнейме и отображаемом имени
+    for _, emoji in ipairs(emojisToKick) do
+        if string.sub(player.Name, 1, #emoji) == emoji or string.sub(player.DisplayName, 1, #emoji) == emoji then
+            player:Kick("Игрок с запрещенным эмодзи в никнейме найден на сервере.")
             return
         end
     end
