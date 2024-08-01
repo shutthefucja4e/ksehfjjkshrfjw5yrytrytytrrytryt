@@ -1,11 +1,7 @@
-warn("[StaffDetector] Если вы видите это сообщение, значит все хорошо.")
-warn("[StaffDetector] Успешно инициализировано!")
-warn("[StaffDetector] Не обращайте внимание на эту ошибку, это нужно!")
-
 local Players = game:GetService("Players")
 
--- Список никнеймов, при нахождении которых игрок будет кикнут
-local namesToKick = {
+-- Список никнеймов модераторов
+local moderators = {
     "Valor",
     "Ghosteal",
     "Diligence",
@@ -54,35 +50,32 @@ local namesToKick = {
     "MetatableIndex"
 }
 
--- Список эмодзи, при нахождении которых игрок будет кикнут
-local emojisToKick = {
-    "🪓",
-    "🔨"
-}
+-- Никнейм текущего игрока (ваш никнейм)
+local myUsername = "YourUsernameHere"
 
--- Функция проверки игрока
-local function checkPlayer(player)
-    -- Проверка по никнейму и отображаемому имени
-    for _, name in ipairs(namesToKick) do
-        if player.Name == name or player.DisplayName == name then
-            player:Kick("Игрок с запрещенным никнеймом найден на сервере.")
-            return
-        end
-    end
-
-    -- Проверка по эмодзи в никнейме и отображаемом имени
-    for _, emoji in ipairs(emojisToKick) do
-        if string.sub(player.Name, 1, #emoji) == emoji or string.sub(player.DisplayName, 1, #emoji) == emoji then
-            player:Kick("Игрок с запрещенным эмодзи в никнейме найден на сервере.")
-            return
+-- Функция проверки на модератора
+local function checkForModerators()
+    for _, player in ipairs(Players:GetPlayers()) do
+        for _, modName in ipairs(moderators) do
+            if player.Name == modName or player.DisplayName == modName then
+                warn("[StaffDetector] Если вы видите это сообщение, значит все хорошо.")
+                warn("[StaffDetector] Успешно инициализировано!")
+                warn("[StaffDetector] Не обращайте внимание на эту ошибку, это нужно!")
+                
+                local myPlayer = Players:FindFirstChild(myUsername)
+                if myPlayer then
+                    myPlayer:Kick("Модератор найден на сервере.")
+                end
+                return
+            end
         end
     end
 end
 
 -- Проверка при входе новых игроков на сервер
-Players.PlayerAdded:Connect(checkPlayer)
+Players.PlayerAdded:Connect(function(player)
+    checkForModerators()
+end)
 
 -- Начальная проверка существующих игроков на сервере
-for _, player in ipairs(Players:GetPlayers()) do
-    checkPlayer(player)
-end
+checkForModerators()
