@@ -1,3 +1,5 @@
+print("STAFF DETECTOR loaded")
+
 local Players = game:GetService("Players")
 
 local function isModeratorName(name)
