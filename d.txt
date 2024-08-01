@@ -1,3 +1,5 @@
+warn("Ожидайте инициализации.")
+
 local Players = game:GetService("Players")
 
 -- Список никнеймов модераторов
@@ -51,7 +53,7 @@ local moderators = {
 }
 
 -- Никнейм текущего игрока (ваш никнейм)
-local myUsername = "YourUsernameHere"
+local myUsername = "nwfowhw592y54jkh5wT9"
 
 -- Функция проверки на модератора
 local function checkForModerators()
