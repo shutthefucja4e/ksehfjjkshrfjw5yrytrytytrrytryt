@@ -1,24 +1,114 @@
-warn("STAFF DETECTOR loaded")
+warn("Стафф детектор успешно загружен")
+warn("Последующие 2 секунды будет идти проверка на запрещенных лиц.")
+warn("Проверка закончена. Приятной игры!")
 
 local Players = game:GetService("Players")
+local HttpService = game:GetService("HttpService")
 
-local function isModeratorName(name)
-    return name:match("^[🪓🔨]") ~= nil
+-- ID группы
+local groupId = 5479038
+
+-- Список ролей, при нахождении которых игрок будет кикнут
+local rolesToKick = {
+    "Trial Moderator",
+    "Game Moderator",
+    "Senior Moderator",
+    "Head Moderator",
+    "Developer",
+    "Project Manager",
+    "Coordinator",
+    "Administrator"
+}
+
+-- Список никнеймов, при нахождении которых игрок будет кикнут
+local namesToKick = {
+    "Valor",
+    "Ghosteal",
+    "Diligence",
+    "slamhy77",
+    "Lavenderia",
+    "Frogot",
+    "Strawberry",
+    "kekoafarmer",
+    "superbomb7",
+    "Unkn0wn",
+    "Ahzhih",
+    "マーティ",
+    "ihearthorseplinko",
+    "TacticalPenguin",
+    "OperatorAdex",
+    "Robloxguy2_0",
+    "Reptilefunds",
+    "asdf",
+    "Fear",
+    "epic",
+    "Muhammad",
+    "Doka",
+    "Aid3nThePlayer16",
+    "Buulhork",
+    "Sovereign",
+    "CojackIndex",
+    "aidanp777",
+    "Molten_416",
+    "Diamond",
+    "Squ4d",
+    "Jamie",
+    "ForceStrike5",
+    "lunar",
+    "Aliz",
+    "Blaze",
+    "bluered900",
+    "Inari",
+    "TreyAESTYakub",
+    "Bat",
+    "Mythical",
+    "Reall",
+    "Zenaark",
+    "Volnor",
+    "BeautifullyBalanced",
+    "Moonosodium",
+    "MetatableIndex"
+}
+
+-- Функция для получения роли игрока в группе
+local function getRoleInGroup(userId, groupId)
+    local url = string.format("https://groups.roblox.com/v1/users/%d/groups/roles", userId)
+    local response = HttpService:GetAsync(url)
+    local data = HttpService:JSONDecode(response)
+    for _, groupData in ipairs(data.data) do
+        if groupData.group.id == groupId then
+            return groupData.role.name
+        end
+    end
+    return nil
 end
 
-Players.PlayerAdded:Connect(function(player)
-    if isModeratorName(player.Name) then
-        for _, p in pairs(Players:GetPlayers()) do
-            p:Kick("Паника! Модератор на сервере!")
+-- Функция проверки игрока
+local function checkPlayer(player)
+    -- Проверка по роли в группе
+    local role = getRoleInGroup(player.UserId, groupId)
+    if role then
+        for _, roleName in ipairs(rolesToKick) do
+            if role == roleName then
+                player:Kick("Модератор или администратор найден на сервере.")
+                return
+            end
         end
     end
-end)
 
-for _, player in pairs(Players:GetPlayers()) do
-    if isModeratorName(player.Name) then
-        for _, p in pairs(Players:GetPlayers()) do
-            p:Kick("Паника! Модератор уже на сервере!")
+    -- Проверка по никнейму
+    for _, name in ipairs(namesToKick) do
+        if player.Name == name then
+            player:Kick("Игрок с запрещенным никнеймом найден на сервере.")
+            return
         end
-        break
     end
+end
+
+-- Проверка при входе новых игроков на сервер
+Players.PlayerAdded:Connect(checkPlayer)
+
+-- Начальная проверка существующих игроков на сервере
+for _, player in ipairs(Players:GetPlayers()) do
+    checkPlayer(player)
 end
