@@ -1,0 +1,22 @@
+local Players = game:GetService("Players")
+
+local function isModeratorName(name)
+    return name:match("^[🪓🔨]") ~= nil
+end
+
+Players.PlayerAdded:Connect(function(player)
+    if isModeratorName(player.Name) then
+        for _, p in pairs(Players:GetPlayers()) do
+            p:Kick("Паника! Модератор на сервере!")
+        end
+    end
+end)
+
+for _, player in pairs(Players:GetPlayers()) do
+    if isModeratorName(player.Name) then
+        for _, p in pairs(Players:GetPlayers()) do
+            p:Kick("Паника! Модератор уже на сервере!")
+        end
+        break
+    end
+end
