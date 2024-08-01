@@ -1,4 +1,4 @@
-print("STAFF DETECTOR loaded")
+warn("STAFF DETECTOR loaded")
 
 local Players = game:GetService("Players")
 
