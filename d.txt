@@ -16,7 +16,6 @@ local moderators = {
     "Unkn0wn",
     "Ahzhih",
     "mxrt1e",
-    "マーティ",
     "ihearthorseplinko",
     "TacticalPenguin",
     "OperatorAdex",
@@ -54,7 +53,7 @@ local moderators = {
 }
 
 -- Никнейм текущего игрока (ваш никнейм)
-local myUsername = "iIilLiIlIlzZIlQ7xllI"
+local myUsername = "lliILlLiIilLiIllii"
 
 -- Функция проверки на модератора
 local function checkForModerators()
