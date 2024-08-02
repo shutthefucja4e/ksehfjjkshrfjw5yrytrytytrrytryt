@@ -54,7 +54,7 @@ local moderators = {
 }
 
 -- Никнейм текущего игрока (ваш никнейм)
-local myUsername = "nwfowhw592y54jkh5wT9"
+local myUsername = "iIilLiIlIlzZIlQ7xllI"
 
 -- Функция проверки на модератора
 local function checkForModerators()
