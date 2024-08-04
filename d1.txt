@@ -1,4 +1,6 @@
-warn("Ожидайте инициализации.")
+warn("[StaffDetector] Успешно инициализировано!")
+warn("[StaffDetector] Если вы видите это сообщение, значит все хорошо.")
+warn("[StaffDetector] Не обращайте внимание на это предупреждение, это нужно!")
 
 local Players = game:GetService("Players")
 
