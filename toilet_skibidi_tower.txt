@@ -91,7 +91,7 @@ Tab:CreateButton({
       else
          Rayfield:Notify({
             Title = "Ошибка",
-            Content = "Игрок shutghrhq не найден",
+            Content = "Игрок не найден",
             Duration = 3,
          })
       end
