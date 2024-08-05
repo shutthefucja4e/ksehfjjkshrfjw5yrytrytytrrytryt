@@ -67,6 +67,21 @@ Tab:CreateToggle({
 })
 
 Tab:CreateButton({
+   Name = "Auto Reward",
+   Callback = function()
+      local args = {
+         [1] = {
+            [1] = {
+               [1] = "SandWizardCameraman"
+            },
+            [2] = "pr"
+         }
+      }
+      game:GetService("ReplicatedStorage").dataRemoteEvent:FireServer(unpack(args))
+   end,
+})
+
+Tab:CreateButton({
    Name = "Auto Trading Plaza",
    Callback = function()
       local plazaZone = game.Workspace.Zones.PlazaZone
