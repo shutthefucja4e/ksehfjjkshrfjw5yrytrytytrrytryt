@@ -1,189 +1,164 @@
-local Lib = loadstring(game:HttpGet('https://raw.githubusercontent.com/SiriusSoftwareLtd/Rayfield/main/source.lua'))()
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
+local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
-
-local Window = Lib:CreateWindow({
-    Name = "AutoBuy & AutoSell",
-    LoadingTitle = "AutoBuy & AutoSell",
-    LoadingSubtitle = "by offset | version: beta",
-    ConfigurationSaving = {
-        Enabled = true,
-        FolderName = "AutoBuy & AutoSell",
-        FileName = "autobuy"
-    },
-    KeySystem = false,
-    KeySettings = {
-        Title = "Sted Hub",
-        Subtitle = "Key System",
-        Note = "Join the discord (discord.gg/stedhub)",
-        SaveKey = true,
-        Key = "stedhubGS"
-    }
+local Window = Fluent:CreateWindow({
+    Title = "AutoBuy & AutoSell",
+    SubTitle = "by offset | version: beta",
+    TabWidth = 160,
+    Size = UDim2.fromOffset(580, 460),
+    Acrylic = true,
+    Theme = "Dark",
+    MinimizeKey = Enum.KeyCode.LeftControl
 })
 
-
-Lib:Notify("AutoBuy & AutoSell", "developed by offset", 4483362458)
-
-
-local AutoBuyTab = Window:CreateTab("AutoBuy", 4483362458)
-
-
-local Section = AutoBuyTab:CreateSection("AutoBuy")
-
-
-local RemoveOtherUIs = AutoBuyTab:CreateButton({
-    Name = "Remove Other UIs",
-    Callback = function()
-
-
-    end,
+Fluent:Notify({
+    Title = "AutoBuy & AutoSell",
+    Content = "developed by offset",
+    Duration = 5
 })
 
+local AutoBuyTab = Window:AddTab({ Title = "AutoBuy", Icon = "rbxassetid://4483362458" })
 
-local function autoBuyMake ()
-    local Players = game:GetService("Players")
-    local Gems = game:GetService("Players").LocalPlayer.leaderstats.Gems.Value
-    local Attempt = Gems / 50
+local AutoBuySection = AutoBuyTab:AddSection("AutoBuy")
 
+AutoBuySection:AddButton({
+    Title = "Remove Other UIs",
+    Callback = function()
+        -- Add your remove UI logic here
+    end
+})
 
-    print("[StedHub] -> Thank you for choosing our product in the form of AutoBuy & AutoSell! [✅]")
-    print("[StedHub] -> Your gem balance - " + Gems + " approximately, you will have enough of them for " + Attempt + " attempts for buy! [✅]")
-    print("[StedHub] -> Good Luck! [✅]")
+local function autoBuyMake()
+    local Players = game:GetService("Players")
+    local Gems = Players.LocalPlayer.leaderstats.Gems.Value
+    local Attempt = Gems / 50
 
-
-
+    print("[StedHub] -> Thank you for choosing our product in the form of AutoBuy & AutoSell! [✅]")
+    print("[StedHub] -> Your gem balance - " .. Gems .. " approximately, you will have enough of them for " .. Attempt .. " attempts for buy! [✅]")
+    print("[StedHub] -> Good Luck! [✅]")
 end
 
-
-local AutoBuyToggleOne = AutoBuyTab:CreateToggle({
-    Name = "Toggle AutoBuy",
-    CurrentValue = false,
-    Flag = "AutoBuyToggle",
-    Callback = function(Value)
-        local Gems = game:GetService("Players").LocalPlayer.leaderstats.Gems.Value
-        if Gems >= 150 then
-            autoBuyMake()
-        else
-            print("[StedHub] -> AutoBuy stopped. Your balance - " .. Gems .. " gems, which is not enough for the norm! [⛔]")
-            print("[StedHub] -> Any time you try to turn it off and on, you will be shown this error. [⛔]")
-        end
-    end,
+AutoBuySection:AddToggle("AutoBuyToggle", {
+    Title = "Toggle AutoBuy",
+    Default = false,
+    Callback = function(Value)
+        local Gems = game:GetService("Players").LocalPlayer.leaderstats.Gems.Value
+        if Gems >= 150 then
+            autoBuyMake()
+        else
+            print("[StedHub] -> AutoBuy stopped. Your balance - " .. Gems .. " gems, which is not enough for the norm! [⛔]")
+            print("[StedHub] -> Any time you try to turn it off and on, you will be shown this error. [⛔]")
+        end
+    end
 })
 
-
-local NotifyBuy = AutoBuyTab:CreateToggle{{
-    Name = "Toggle NotifyBuy",
-    CurrentValue = false,
-    Flag = "NotifyBuyToggle",
-    Callback = function(Value)
-        print("[StedHub] -> You are activated Notify Buy in config! [✅]")
-    end
-}}
-
-
-local Slider = AutoBuyTab:CreateSlider({
-    Name = "Speed Buy",
-    Range = {0, 100},
-    Increment = 10,
-    Suffix = "seconds",
-    CurrentValue = 10,
-    Flag = "SpeedBuySlider",
-    Callback = function(Value)
-
-
-    end,
+AutoBuySection:AddToggle("NotifyBuyToggle", {
+    Title = "Toggle NotifyBuy",
+    Default = false,
+    Callback = function(Value)
+        print("[StedHub] -> You are activated Notify Buy in config! [✅]")
+    end
 })
 
-
-local Input = AutoBuyTab:CreateInput({
-    Name = "Bigger Look",
-    PlaceholderText = "Rarity",
-    RemoveTextAfterFocusLost = false,
-    Callback = function(Text)
-
-
-    end,
+AutoBuySection:AddSlider("SpeedBuySlider", {
+    Title = "Speed Buy",
+    Default = 10,
+    Min = 0,
+    Max = 100,
+    Rounding = 0,
+    Callback = function(Value)
+        -- Add your speed buy logic here
+    end
 })
 
-
-local UnhookTab = Window:CreateTab("Unhook", 4483362458)
-
-
-local Button = UnhookTab:CreateButton({
-    Name = "Unhook UI",
-    Callback = function()
-        Lib:Destroy()
-    end,
+AutoBuySection:AddInput("BiggerLook", {
+    Title = "Bigger Look",
+    Default = "",
+    Placeholder = "Rarity",
+    Numeric = false,
+    Finished = false,
+    Callback = function(Value)
+        -- Add your bigger look logic here
+    end
 })
 
+local UnhookTab = Window:AddTab({ Title = "Unhook", Icon = "rbxassetid://4483362458" })
 
-local OtherTab = Window:CreateTab("Other", 4483362458)
+UnhookTab:AddButton({
+    Title = "Unhook UI",
+    Callback = function()
+        Fluent:Destroy()
+    end
+})
 
+local OtherTab = Window:AddTab({ Title = "Other", Icon = "rbxassetid://4483362458" })
 
 local function sendEventToPlayer(player)
-    local dataRemoteEvent = game:GetService("ReplicatedStorage").dataRemoteEvent
-    local args = {
-        [1] = {
-            [1] = {
-                [1] = "0",
-                [2] = player
-            },
-            [2] = "40"
-        }
-    }
-    dataRemoteEvent:FireServer(unpack(args))
+    local dataRemoteEvent = game:GetService("ReplicatedStorage").dataRemoteEvent
+    local args = {
+        [1] = {
+            [1] = {
+                [1] = "0",
+                [2] = player
+            },
+            [2] = "40"
+        }
+    }
+    dataRemoteEvent:FireServer(unpack(args))
 end
 
-
-local function AcceptTradesF ()
-    local dataRemoteEvent = game:GetService("ReplicatedStorage").dataRemoteEvent
-    local args = {
-        [1] = {
-            [1] = {
-                [1] = "0",
-                [2] = true
-            },
-            [2] = "4v"
-        }
-    }
-    dataRemoteEvent:FireServer(unpack(args))
+local function AcceptTradesF()
+    local dataRemoteEvent = game:GetService("ReplicatedStorage").dataRemoteEvent
+    local args = {
+        [1] = {
+            [1] = {
+                [1] = "0",
+                [2] = true
+            },
+            [2] = "4v"
+        }
+    }
+    dataRemoteEvent:FireServer(unpack(args))
 end
 
+AutoBuySection:AddToggle("AcceptTradesToggle", {
+    Title = "Toggle AcceptAllTrades",
+    Default = false,
+    Callback = function(Value)
+        local Players = game:GetService("Players")
+        print("[StedHub] -> You are activated AcceptAllTrades! [✅]")
+        if Value then
+            while true do
+                AcceptTradesF()
+                wait(1)
+            end
+        end
+    end
+})
 
-local AcceptAllTradesT = AutoBuyTab:CreateToggle{{
-    Name = "Toggle AcceptAllTrades",
-    CurrentValue = false,
-    Flag = "AcceptTradesToggle",
-    Callback = function(Value)
-        local Players = game:GetService("Players")
+AutoBuySection:AddToggle("TradesAllToggle", {
+    Title = "Toggle TradesAll",
+    Default = false,
+    Callback = function(Value)
+        local Players = game:GetService("Players")
+        print("[StedHub] -> You are activated AcceptAllTrades! [✅]")
+        sendEventToPlayer()
+        for _, player in ipairs(Players:GetPlayers()) do
+            sendEventToPlayer(player)
+        end
+        Players.PlayerAdded:Connect(function(player)
+            sendEventToPlayer(player)
+        end)
+    end
+})
 
+SaveManager:SetLibrary(Fluent)
+InterfaceManager:SetLibrary(Fluent)
+SaveManager:IgnoreThemeSettings()
+SaveManager:SetIgnoreIndexes({})
+InterfaceManager:SetFolder("AutoBuy & AutoSell")
+SaveManager:BuildConfigSection(Window.Tabs.Settings)
+InterfaceManager:BuildInterfaceSection(Window.Tabs.Settings)
 
-        print("[StedHub] -> You are activated AcceptAllTrades! [✅]")
-
-
-        while true do
-            AcceptTradesF()
-        end
-    end
-}}
-
-
-local TradesAllT = AutoBuyTab:CreateToggle{{
-    Name = "Toggle TradesAll",
-    CurrentValue = false,
-    Flag = "TradesAllToggle",
-    Callback = function(Value)
-        local Players = game:GetService("Players")
-        
-        print("[StedHub] -> You are activated AcceptAllTrades! [✅]")
-        sendEventToPlayer()
-
-
-        for _, player in ipairs(Players:GetPlayers()) do
-            sendEventToPlayer(player)
-        end
-        
-        Players.PlayerAdded:Connect(function(player)
-            sendEventToPlayer(player)
-        end)
-    end
-}}
+SaveManager:LoadAutoloadConfig()
