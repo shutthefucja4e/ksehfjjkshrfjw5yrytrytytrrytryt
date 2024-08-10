@@ -26,20 +26,13 @@ local charactersToBuy = {
 
 local function findCharacterObject(characterName)
     local allUnits = game:GetService("Players").LocalPlayer.PlayerGui.Lobby.MarketplaceFrame.MarketplaceMain.MainFrame.BuyMenu.AllUnits
-    for i, unit in ipairs(allUnits:GetChildren()) do
-        if unit:IsA("Frame") then
-            local mainFrame = unit:FindFirstChild("MainFrame")
-            if mainFrame then
-                local unitInfo = mainFrame:FindFirstChild("UnitInfo")
-                if unitInfo then
-                    local unitName = unitInfo:FindFirstChild("UnitName")
-                    if unitName and unitName:IsA("TextLabel") then
-                        local unitNameText = unitName.Text
-                        print("Checking unit " .. i .. ": " .. unitNameText)
-                        if unitNameText:find(characterName) then
-                            return unit
-                        end
-                    end
+    for _, unit in ipairs(allUnits:GetChildren()) do
+        if unit:IsA("Frame") and unit:FindFirstChild("MainFrame") then
+            local unitInfo = unit.MainFrame:FindFirstChild("UnitInfo")
+            if unitInfo then
+                local unitName = unitInfo:FindFirstChild("UnitName")
+                if unitName and unitName:IsA("TextLabel") and unitName.Text:find(characterName) then
+                    return unit
                 end
             end
         end
@@ -84,17 +77,10 @@ local function switchToTab(tabName)
 end
 
 local function autoBuy()
-    for characterName, _ in pairs(charactersToBuy) do
+    for characterName, maxPrice in pairs(charactersToBuy) do
         local characterObject = findCharacterObject(characterName)
         if characterObject then
-            local rarity = getRarity(characterObject)
-            if rarity then
-                switchToTab(rarity)
-                wait(1)
-                buyCharacter(characterObject)
-            else
-                print("Rarity not found for: " .. characterName)
-            end
+            buyCharacter(characterObject, maxPrice)
         else
             print("Character not found: " .. characterName)
         end
