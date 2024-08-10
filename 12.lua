@@ -27,9 +27,11 @@ local charactersToBuy = {
 local function findCharacterObject(characterName)
     local allUnits = game:GetService("Players").LocalPlayer.PlayerGui.Lobby.MarketplaceFrame.MarketplaceMain.MainFrame.BuyMenu.AllUnits
     for _, unit in ipairs(allUnits:GetChildren()) do
-        if unit:FindFirstChild("MainFrame") and unit.MainFrame:FindFirstChild("UnitInfo") then
-            local nameLabel = unit.MainFrame.UnitInfo:FindFirstChild("NameLabel")
-            if nameLabel and nameLabel.Text:find(characterName) then
+        if unit:FindFirstChild("MainFrame") and 
+           unit.MainFrame:FindFirstChild("UnitInfo") and 
+           unit.MainFrame.UnitInfo:FindFirstChild("UnitName") then
+            local unitNameText = unit.MainFrame.UnitInfo.UnitName.Text
+            if unitNameText == characterName then
                 return unit
             end
         end
