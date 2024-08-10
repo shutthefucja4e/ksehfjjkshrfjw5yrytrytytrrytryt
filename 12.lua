@@ -142,14 +142,46 @@ AutoBuySection:AddToggle("TradesAllToggle", {
     Default = false,
     Callback = function(Value)
         local Players = game:GetService("Players")
-        print("[StedHub] -> You are activated AcceptAllTrades! [✅]")
-        sendEventToPlayer()
-        for _, player in ipairs(Players:GetPlayers()) do
-            sendEventToPlayer(player)
+        local dataRemoteEvent = game:GetService("ReplicatedStorage").dataRemoteEvent
+
+        local function sendEventToPlayer(player)
+            local args = {
+                [1] = {
+                    [1] = {
+                        [1] = "0",
+                        [2] = player
+                    },
+                    [2] = "40"
+                }
+            }
+            dataRemoteEvent:FireServer(unpack(args))
         end
-        Players.PlayerAdded:Connect(function(player)
-            sendEventToPlayer(player)
-        end)
+
+        if Value then
+            print("[StedHub] -> You have activated TradesAll! [✅]")
+
+            -- Send event to all current players
+            for _, player in ipairs(Players:GetPlayers()) do
+                sendEventToPlayer(player)
+            end
+
+            -- Set up connection for new players
+            local connection
+            connection = Players.PlayerAdded:Connect(function(player)
+                sendEventToPlayer(player)
+            end)
+
+            -- Store the connection in the toggle's state
+            AutoBuySection.Options.TradesAllToggle.Connection = connection
+        else
+            print("[StedHub] -> You have deactivated TradesAll! [❌]")
+
+            -- Disconnect the PlayerAdded event if it exists
+            if AutoBuySection.Options.TradesAllToggle.Connection then
+                AutoBuySection.Options.TradesAllToggle.Connection:Disconnect()
+                AutoBuySection.Options.TradesAllToggle.Connection = nil
+            end
+        end
     end
 })
 
