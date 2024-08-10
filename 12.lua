@@ -31,7 +31,7 @@ local function findCharacterObject(characterName)
            unit.MainFrame:FindFirstChild("UnitInfo") and 
            unit.MainFrame.UnitInfo:FindFirstChild("UnitName") then
             local unitNameText = unit.MainFrame.UnitInfo.UnitName.Text
-            if unitNameText:find(characterName) then
+            if unitNameText and unitNameText:find(characterName) then
                 return unit
             end
         end
