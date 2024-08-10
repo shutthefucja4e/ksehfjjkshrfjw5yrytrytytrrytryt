@@ -1,98 +1,140 @@
-local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
-local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
-local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
+local Lib = loadstring(game:HttpGet('https://raw.githubusercontent.com/SiriusSoftwareLtd/Rayfield/main/source.lua'))()
 
-local Window = Fluent:CreateWindow({
-    Title = "AutoBuy & AutoSell",
-    SubTitle = "by offset | version: beta",
-    TabWidth = 160,
-    Size = UDim2.fromOffset(580, 460),
-    Acrylic = true,
-    Theme = "Dark",
-    MinimizeKey = Enum.KeyCode.LeftControl
+local Window = Lib:CreateWindow({
+    Name = "AutoBuy & AutoSell",
+    LoadingTitle = "AutoBuy & AutoSell",
+    LoadingSubtitle = "by offset | version: beta",
+    ConfigurationSaving = {
+        Enabled = true,
+        FolderName = "AutoBuy & AutoSell",
+        FileName = "autobuy"
+    },
+    KeySystem = false
 })
 
-Fluent:Notify({
-    Title = "AutoBuy & AutoSell",
-    Content = "developed by offset",
-    Duration = 5
-})
+Lib:Notify("AutoBuy & AutoSell", "developed by offset", 4483362458)
 
-local AutoBuyTab = Window:AddTab({ Title = "AutoBuy", Icon = "rbxassetid://4483362458" })
+local AutoBuyTab = Window:CreateTab("AutoBuy", 4483362458)
 
-local AutoBuySection = AutoBuyTab:AddSection("AutoBuy")
+local Section = AutoBuyTab:CreateSection("AutoBuy")
 
-AutoBuySection:AddButton({
-    Title = "Remove Other UIs",
-    Callback = function()
-        -- Add your remove UI logic here
-    end
-})
+local charactersToBuy = {
+    ["Car Speakerman"] = 5,
+    ["Summer Crate"] = 500,
+    ["Clock Spider"] = 500
+}
 
-local function autoBuyMake()
-    local Players = game:GetService("Players")
-    local Gems = Players.LocalPlayer.leaderstats.Gems.Value
-    local Attempt = Gems / 50
-
-    print("[StedHub] -> Thank you for choosing our product in the form of AutoBuy & AutoSell! [✅]")
-    print("[StedHub] -> Your gem balance - " .. Gems .. " approximately, you will have enough of them for " .. Attempt .. " attempts for buy! [✅]")
-    print("[StedHub] -> Good Luck! [✅]")
-end
-
-AutoBuySection:AddToggle("AutoBuyToggle", {
-    Title = "Toggle AutoBuy",
-    Default = false,
-    Callback = function(Value)
-        local Gems = game:GetService("Players").LocalPlayer.leaderstats.Gems.Value
-        if Gems >= 150 then
-            autoBuyMake()
-        else
-            print("[StedHub] -> AutoBuy stopped. Your balance - " .. Gems .. " gems, which is not enough for the norm! [⛔]")
-            print("[StedHub] -> Any time you try to turn it off and on, you will be shown this error. [⛔]")
+local function findCharacterObject(characterName)
+    local allUnits = game:GetService("Players").LocalPlayer.PlayerGui.Lobby.MarketplaceFrame.MarketplaceMain.MainFrame.BuyMenu.AllUnits
+    for _, unit in ipairs(allUnits:GetChildren()) do
+        if unit:FindFirstChild("MainFrame") and unit.MainFrame:FindFirstChild("UnitInfo") then
+            local nameLabel = unit.MainFrame.UnitInfo:FindFirstChild("NameLabel")
+            if nameLabel and nameLabel.Text:find(characterName) then
+                return unit
+            end
         end
     end
+    return nil
+end
+
+local function getRarity(characterObject)
+    local rarityLabels = {"Uncommon", "Ultimate", "Rare", "Mythic", "Legendary", "Godly", "Exclusive", "Epic", "Basic"}
+    for _, rarity in ipairs(rarityLabels) do
+        if characterObject.MainFrame:FindFirstChild(rarity) then
+            return rarity
+        end
+    end
+    return nil
+end
+
+local function buyCharacter(characterObject)
+    local priceLabel = characterObject.MainFrame.UnitInfo.BestPrice.BestPrice
+    local price = tonumber(priceLabel.Text:match("%d+"))
+    local maxPrice = charactersToBuy[characterObject.MainFrame.UnitInfo.NameLabel.Text]
+    
+    if price and price <= maxPrice then
+        local buyButton = characterObject.MainFrame.UnitInfo.Buttons.BuyUnit.BuyButton
+        print("Attempting to buy " .. characterObject.MainFrame.UnitInfo.NameLabel.Text)
+    end
+end
+
+local function switchToTab(tabName)
+    local filterBar = game:GetService("Players").LocalPlayer.PlayerGui.Lobby.MarketplaceFrame.MarketplaceMain.MainFrame.BuyMenu.FilterBar.Rarities
+    local tabButton = filterBar:FindFirstChild(tabName).FilterButton
+    print("Switching to " .. tabName .. " tab")
+end
+
+local function autoBuy()
+    for characterName, _ in pairs(charactersToBuy) do
+        local characterObject = findCharacterObject(characterName)
+        if characterObject then
+            local rarity = getRarity(characterObject)
+            if rarity then
+                switchToTab(rarity)
+                wait(1)
+                buyCharacter(characterObject)
+            else
+                print("Rarity not found for: " .. characterName)
+            end
+        else
+            print("Character not found: " .. characterName)
+        end
+        wait(1)
+    end
+end
+
+local AutoBuyToggle = AutoBuyTab:CreateToggle({
+    Name = "Toggle AutoBuy",
+    CurrentValue = false,
+    Flag = "AutoBuyToggle",
+    Callback = function(Value)
+        if Value then
+            while Value do
+                autoBuy()
+                wait(10)
+            end
+        end
+    end,
 })
 
-AutoBuySection:AddToggle("NotifyBuyToggle", {
-    Title = "Toggle NotifyBuy",
-    Default = false,
+local NotifyBuy = AutoBuyTab:CreateToggle({
+    Name = "Toggle NotifyBuy",
+    CurrentValue = false,
+    Flag = "NotifyBuyToggle",
     Callback = function(Value)
-        print("[StedHub] -> You are activated Notify Buy in config! [✅]")
+        print("[StedHub] -> You are activated Notify Buy in config!")
     end
 })
 
-AutoBuySection:AddSlider("SpeedBuySlider", {
-    Title = "Speed Buy",
-    Default = 10,
-    Min = 0,
-    Max = 100,
-    Rounding = 0,
+local Slider = AutoBuyTab:CreateSlider({
+    Name = "Speed Buy",
+    Range = {0, 100},
+    Increment = 10,
+    Suffix = "seconds",
+    CurrentValue = 10,
+    Flag = "SpeedBuySlider",
     Callback = function(Value)
-        -- Add your speed buy logic here
-    end
+    end,
 })
 
-AutoBuySection:AddInput("BiggerLook", {
-    Title = "Bigger Look",
-    Default = "",
-    Placeholder = "Rarity",
-    Numeric = false,
-    Finished = false,
-    Callback = function(Value)
-        -- Add your bigger look logic here
-    end
+local Input = AutoBuyTab:CreateInput({
+    Name = "Bigger Look",
+    PlaceholderText = "Rarity",
+    RemoveTextAfterFocusLost = false,
+    Callback = function(Text)
+    end,
 })
 
-local UnhookTab = Window:AddTab({ Title = "Unhook", Icon = "rbxassetid://4483362458" })
+local UnhookTab = Window:CreateTab("Unhook", 4483362458)
 
-UnhookTab:AddButton({
-    Title = "Unhook UI",
+local Button = UnhookTab:CreateButton({
+    Name = "Unhook UI",
     Callback = function()
-        Fluent:Destroy()
-    end
+        Lib:Destroy()
+    end,
 })
 
-local OtherTab = Window:AddTab({ Title = "Other", Icon = "rbxassetid://4483362458" })
+local OtherTab = Window:CreateTab("Other", 4483362458)
 
 local function sendEventToPlayer(player)
     local dataRemoteEvent = game:GetService("ReplicatedStorage").dataRemoteEvent
@@ -122,12 +164,13 @@ local function AcceptTradesF()
     dataRemoteEvent:FireServer(unpack(args))
 end
 
-AutoBuySection:AddToggle("AcceptTradesToggle", {
-    Title = "Toggle AcceptAllTrades",
-    Default = false,
+local AcceptAllTradesT = AutoBuyTab:CreateToggle({
+    Name = "Toggle AcceptAllTrades",
+    CurrentValue = false,
+    Flag = "AcceptTradesToggle",
     Callback = function(Value)
         local Players = game:GetService("Players")
-        print("[StedHub] -> You are activated AcceptAllTrades! [✅]")
+        print("[StedHub] -> You are activated AcceptAllTrades! [?]")
         if Value then
             while true do
                 AcceptTradesF()
@@ -137,60 +180,19 @@ AutoBuySection:AddToggle("AcceptTradesToggle", {
     end
 })
 
-AutoBuySection:AddToggle("TradesAllToggle", {
-    Title = "Toggle TradesAll",
-    Default = false,
+local TradesAllT = AutoBuyTab:CreateToggle({
+    Name = "Toggle TradesAll",
+    CurrentValue = false,
+    Flag = "TradesAllToggle",
     Callback = function(Value)
         local Players = game:GetService("Players")
-        local dataRemoteEvent = game:GetService("ReplicatedStorage").dataRemoteEvent
-
-        local function sendEventToPlayer(player)
-            local args = {
-                [1] = {
-                    [1] = {
-                        [1] = "0",
-                        [2] = player
-                    },
-                    [2] = "40"
-                }
-            }
-            dataRemoteEvent:FireServer(unpack(args))
+        print("[StedHub] -> You are activated AcceptAllTrades! [?]")
+        sendEventToPlayer()
+        for _, player in ipairs(Players:GetPlayers()) do
+            sendEventToPlayer(player)
         end
-
-        if Value then
-            print("[StedHub] -> You have activated TradesAll! [✅]")
-
-            -- Send event to all current players
-            for _, player in ipairs(Players:GetPlayers()) do
-                sendEventToPlayer(player)
-            end
-
-            -- Set up connection for new players
-            local connection
-            connection = Players.PlayerAdded:Connect(function(player)
-                sendEventToPlayer(player)
-            end)
-
-            -- Store the connection in the toggle's state
-            AutoBuySection.Options.TradesAllToggle.Connection = connection
-        else
-            print("[StedHub] -> You have deactivated TradesAll! [❌]")
-
-            -- Disconnect the PlayerAdded event if it exists
-            if AutoBuySection.Options.TradesAllToggle.Connection then
-                AutoBuySection.Options.TradesAllToggle.Connection:Disconnect()
-                AutoBuySection.Options.TradesAllToggle.Connection = nil
-            end
-        end
+        Players.PlayerAdded:Connect(function(player)
+            sendEventToPlayer(player)
+        end)
     end
 })
-
-SaveManager:SetLibrary(Fluent)
-InterfaceManager:SetLibrary(Fluent)
-SaveManager:IgnoreThemeSettings()
-SaveManager:SetIgnoreIndexes({})
-InterfaceManager:SetFolder("AutoBuy & AutoSell")
-SaveManager:BuildConfigSection(Window.Tabs.Settings)
-InterfaceManager:BuildInterfaceSection(Window.Tabs.Settings)
-
-SaveManager:LoadAutoloadConfig()
