@@ -71,8 +71,16 @@ end
 
 local function switchToTab(tabName)
     local filterBar = game:GetService("Players").LocalPlayer.PlayerGui.Lobby.MarketplaceFrame.MarketplaceMain.MainFrame.BuyMenu.FilterBar.Rarities
-    local tabButton = filterBar:FindFirstChild(tabName).FilterButton
-    print("Switching to " .. tabName .. " tab")
+    local tabButton = filterBar:FindFirstChild(tabName)
+    if tabButton and tabButton:FindFirstChild("FilterButton") then
+        print("Switching to " .. tabName .. " tab")
+        tabButton.FilterButton:Activate()
+        wait(2) -- Увеличьте задержку, если нужно
+        print("Tab switched, checking UI update")
+        -- Добавьте здесь проверку обновления UI
+    else
+        print("Tab " .. tabName .. " not found")
+    end
 end
 
 local function autoBuy()
